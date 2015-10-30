@@ -21,6 +21,11 @@ class Game
       @wrong = Gosu::Sample.new('sounds/wrong.wav')
     end
     @font = Gosu::Font.new(36)
+    @win = false
+    @win_image = Gosu::Image.new('images/win.png')
+    @lose_image = Gosu::Image.new('images/lose.png')
+    @play_image = Gosu::Image.new('images/play.png')
+    @quit_image = Gosu::Image.new('images/quit.png')
   end
 
   def handle_mouse_down(x,y)
@@ -144,18 +149,17 @@ class Game
     if game_over?
       c = Gosu::Color.argb(0x33000000)
       @window.draw_quad(0, 0, c, 640, 0, c, 640, 640, c, 0, 640, c, 4)
-      @font.draw('Game Over', 230, 240, 5)
-      @font.draw('CTRL+R to Play Again', 205, 320, 5, 0.6, 0.6)
-      @font.draw('CTRL+Q to Quit the Game', 200, 380, 5, 0.6, 0.6)
+
+      count = @squares.count{|square| square.number == 12}
+      if count == 3
+          @win = true
+        end
+      @win_image.draw(0, 240, 5) if @win == true
+
+      @lose_image.draw(0, 240, 5) if @win == false
+      @play_image.draw(0, 320, 5)
+      @quit_image.draw(0, 380, 5)
       return
-    end
-    return unless @start_square
-    @start_square.highlight(:start)
-    return unless @current_square && @current_square != @start_square
-    if move_is_legal?(@start_square, @current_square)
-      @current_square.highlight(:legal)
-    else
-      @current_square.highlight(:illegal)
     end
   end
 
