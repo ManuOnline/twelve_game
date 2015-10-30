@@ -65,6 +65,7 @@ class Game
     #return if squares[0].color != squares[1].color
     #valid move
     @right.play
+    save
     color = squares[0].color
     number = squares[0].number + squares[1].number
     squares[0].clear
@@ -156,5 +157,17 @@ class Game
     else
       @current_square.highlight(:illegal)
     end
+  end
+
+  def save
+    f = File.new("data/SaveGame.sav", "w+")
+    Marshal.dump(@squares, f)
+    f.close
+  end
+
+  def load
+    file = File.open('data/SaveGame.sav')
+    @squares = Marshal.load(file)
+    file.close
   end
 end

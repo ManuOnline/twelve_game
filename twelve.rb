@@ -26,6 +26,9 @@ class Twelve < Gosu::Window
 		if id == Gosu::KbQ && button_down?(Gosu::KbLeftControl)
 			close
 		end
+		if id == Gosu::MsRight
+			@game.load
+		end
 	end
 
 	def button_up(id)
