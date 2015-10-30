@@ -143,7 +143,7 @@ class Game
   end
   
   def draw
-    @squares.each do |square|
+      @squares.each do |square|
       square.draw
     end
     if game_over?
@@ -152,7 +152,7 @@ class Game
 
       count = @squares.count{|square| square.number == 12}
       if count == 3
-          @win = true
+            @win = true
         end
       @win_image.draw(0, 240, 5) if @win == true
 
@@ -160,6 +160,14 @@ class Game
       @play_image.draw(0, 320, 5)
       @quit_image.draw(0, 380, 5)
       return
+    end
+    return unless @start_square
+    @start_square.highlight(:start)
+    return unless @current_square && @current_square != @start_square
+    if move_is_legal?(@start_square, @current_square)
+      @current_square.highlight(:legal)
+    else
+      @current_square.highlight(:illegal)
     end
   end
 
